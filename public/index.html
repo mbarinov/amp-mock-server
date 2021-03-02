@@ -8,13 +8,18 @@
   <h1>Fewcents Login Page</h1>
   <h3>Price: 19 RUB</h3>
   <button onClick="unlock()">Unlock</button>
+  <button onClick="goback()">Go back</button>
   <script>
     var sessionId;
+    var data;
     new URL(window.location).searchParams.forEach((value, key) => {
       if(key === 'sessionId') {
         sessionId = value;
         fetch(`/api/v1/session?sessionId=${value}`).then(res => {
           return res.json();
+        })
+        .then(res => {
+          data = res
         })
       }
     });
@@ -26,6 +31,10 @@
       .then(res => {
         location.href = res.return_url;
       })
+    }
+
+    function goback() {
+      location.href = data.return_url;
     }
   </script>
 </body>
