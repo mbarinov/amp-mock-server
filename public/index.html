@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+  <h1>Fewcents Login Page</h1>
+  <h3>Price: 19 RUB</h3>
+  <button onClick="unlock()">Unlock</button>
+  <script>
+    var sessionId;
+    new URL(window.location).searchParams.forEach((value, key) => {
+      if(key === 'sessionId') {
+        sessionId = value;
+        fetch(`/api/v1/session?sessionId=${value}`).then(res => {
+          return res.json();
+        })
+      }
+    });
+
+    function unlock() {
+      fetch(`/api/v1/unlock?sessionId=${sessionId}`).then(res => {
+        return res.json();
+      })
+      .then(res => {
+        location.href = res.return_url;
+      })
+    }
+  </script>
+</body>
+</html>
